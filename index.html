@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+    <title>STE-ANOMALY-Report</title>
+
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+
+        var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000)
+        camera.position.z = 2;
+
+        var renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setClearColor("#000000");
+        renderer.setSize(window.innerWidth,window.innerHeight);
+
+        document.body.appendChild(renderer.domElement);
+
+        window.addEventListener('resize', () => {
+        renderer.setSize(window.innerWidth,window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+
+        camera.updateProjectionMatrix();
+        })
+
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        var material = new THREE.MeshLambertMaterial({color: 0xF7F7F7});
+
+        meshX = -50;
+        for(var i = 0; i<15;i++) {
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = (Math.random() - 0.7) * 5;
+        mesh.position.y = (Math.random() - 0.8) * 10;
+        mesh.position.z = (Math.random() - 0.6) * 10;
+        scene.add(mesh);
+        meshX+=1;
+
+        
+    }
+
+
+        var light = new THREE.PointLight(0xFFFFF, 1, 1000)
+        light.position.set(0,0,0);
+        scene.add(light);
+
+        var light = new THREE.PointLight(0xFFFFFF, 2, 1000)
+        light.position.set(0,0,25);
+        scene.add(light);
+
+        var render = function() {
+            requestAnimationFrame(render);
+
+
+            renderer.render(scene, camera);
+        }
+
+        function onMouseMove(event) {
+            event.preventDefault();
+
+            mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            var intersects = raycaster.intersectObjects(scene.children, true);
+            for (var i = 0; i < intersects.length; i++) {
+                this.tl = new TimelineMax();
+                this.tl.to(intersects[i].object.scale, 1, {x: 2, ease: Expo.easeOut})
+                this.tl.to(intersects[i].object.scale, .5, {x: .5, ease: Expo.easeOut})
+                this.tl.to(intersects[i].object.position, .5, {x: 2, ease: Expo.easeOut})
+                this.tl.to(intersects[i].object.rotation, .5, {y: Math.PI*.5, ease: Expo.easeOut}, "=-1.5")
+            }
+        }
+
+
+
+        window.addEventListener('mousemove', onMouseMove);
+        render();
+    </script>
+    <div class="container container1">
+        <div class="vertical-center center">
+            <h2>Your One Stop Dialer</h2>
+            <button class="button button1" onClick="location.href='index.html'">Home</button>      
+        <button class="button button2" onClick="location.href='anomaly.html'">Report Anomaly</button>
+        <button class="button button3" onClick="location.href='agile.html'">Agile Station</button>
+        <button class="button button4" onClick="location.href='chat.html'">Chat and Leader Board</button>
+        <br>
+        <button class="button button5" onClick="location.href='current.html'">Current</button>
+        <button class="button button6" onClick="location.href='login.html'">Login/SignUp</button>
+        <button class="button button7" onClick="location.href='tle-map.html'">Debris On World Map</button>
+        <button class="button button8" onClick="location.href='faq.html'">About/FAQ</button>
+        </div>
+    </div>
+
+    
+    
+    
+
+</body>
+</html>

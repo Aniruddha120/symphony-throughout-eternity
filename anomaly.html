@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+
+        var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000)
+        camera.position.z = 2;
+
+        var renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setClearColor("#000000");
+        renderer.setSize(window.innerWidth,window.innerHeight);
+
+        document.body.appendChild(renderer.domElement);
+
+        window.addEventListener('resize', () => {
+        renderer.setSize(window.innerWidth,window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+
+        camera.updateProjectionMatrix();
+        })
+
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        var material = new THREE.MeshLambertMaterial({color: 0xF7F7F7});
+
+        meshX = -50;
+        for(var i = 0; i<15;i++) {
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = (Math.random() - 0.7) * 5;
+        mesh.position.y = (Math.random() - 0.8) * 10;
+        mesh.position.z = (Math.random() - 0.6) * 10;
+        scene.add(mesh);
+        meshX+=1;
+
+        
+    }
+
+
+        var light = new THREE.PointLight(0xFFFFF, 1, 1000)
+        light.position.set(0,0,0);
+        scene.add(light);
+
+        var light = new THREE.PointLight(0xFFFFFF, 2, 1000)
+        light.position.set(0,0,25);
+        scene.add(light);
+
+        var render = function() {
+            requestAnimationFrame(render);
+
+
+            renderer.render(scene, camera);
+        }
+
+        function onMouseMove(event) {
+            event.preventDefault();
+
+            mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            var intersects = raycaster.intersectObjects(scene.children, true);
+            for (var i = 0; i < intersects.length; i++) {
+                this.tl = new TimelineMax();
+                this.tl.to(intersects[i].object.scale, 1, {x: 2, ease: Expo.easeOut})
+                this.tl.to(intersects[i].object.scale, .5, {x: .5, ease: Expo.easeOut})
+                this.tl.to(intersects[i].object.position, .5, {x: 2, ease: Expo.easeOut})
+                this.tl.to(intersects[i].object.rotation, .5, {y: Math.PI*.5, ease: Expo.easeOut}, "=-1.5")
+            }
+        }
+
+
+
+        window.addEventListener('mousemove', onMouseMove);
+        render();
+    </script>
+    <h1>Report Anomaly</h1>
+    <h3>Slide Down</h3>
+    <br>
+        <div class="container container1">
+            <div class="vertical-center center">
+                <h2>Your One Stop Dialer</h2>
+                <button class="button button1" onClick="location.href='index.html'">Home</button>      
+            <button class="button button2" onClick="location.href='anomaly.html'">Report Anomaly</button>
+            <button class="button button3" onClick="location.href='agile.html'">Agile Station</button>
+            <button class="button button4" onClick="location.href='chat.html'">Chat and Leader Board</button>
+            <br>
+            <button class="button button5" onClick="location.href='current.html'">Current</button>
+            <button class="button button6" onClick="location.href='login.html'">Login/SignUp</button>
+            <button class="button button7" onClick="location.href='tle-map.html'">Debris On World Map</button>
+            <button class="button button8" onClick="location.href='faq.html'">About/FAQ</button>
+            </div>
+        </div>
+            
+            <br>
+            
+            <div class="container">
+                <div class="vertical-center center">
+                    <button class="button button9">Capture An Image</button>
+                </div>
+            </div>
+            <div class="container">
+                <div class="vertical-center center">
+                    <button class="button button9">Open A File(Telescope Capture/Signal)</button>
+                </div>
+            </div>
+            
+            <br>
+            
+    <p></p>
+    <label for="fname">Input Your Co-ordinates Manually(Topodetic coordinate system)</label><br>
+    <input type="text" id="fname" name="fname" value=""><br>
+    <p>Update Live Location<b>Only for Astronauts</b> . If you click this, Around 100KM Area Will be Investigated Immediately</p>
+    <button class="button button1">Live Location Update(GPS)</button>
+    <br>
+    <p></p>
+    <p></p>
+    <div>
+        <input type="radio" id="huey" name="drone" value="huey"
+               checked>
+        <label for="huey"><b>For an Emergency Purpose</b>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You can only Submit it as an emergency report, if you are</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Astronaut</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Registered Space Agency Employee</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. Registered Scientist</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You Need To login As the above authorized Credentials to access Emergency Report</p>
+        </label>
+      </div>
+      <br>
+      <div>
+        <input type="radio" id="dewey" name="drone" value="dewey">
+        <label for="dewey">For Research and Observation(You will Recieve Updates in Your Email</label>
+      </div>
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+        <label for="vehicle1">Yes I want to recieve Update Through Email</label><br>
+        <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+        <label for="vehicle2">Yes I want to submit it for Space Trash Hunting Leader Board</label><br>
+
+        <br>
+        </br>
+        <br>
+        </br>
+
+        <div class="container">
+            <div class="vertical-center center">
+                <p>To revoke the possibility of enemy interception, use QKD.(Emergency Purpose Only. Authorised Members Only)</p>
+                <p>Quantum Encryption Key</p>
+        <button type="button buttoncoll" class="collapsible"><c>Reveal Key</c></button>
+        <div class="content">
+          <p>q2w$#477y7u7y</p>
+            </div>
+        <label for="fname">Input Your Key</label><br>
+        <input type="text" id="fname" name="fname" value=""><br>
+          <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+            
+            for (i = 0; i < coll.length; i++) {
+              coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                  content.style.display = "none";
+                } else {
+                  content.style.display = "block";
+                }
+              });
+            }
+            </script>
+    <br>
+    <br>        
+    <button style="font-size:24px"><i class="fa fa-phone"></i>Call Ground Station Emergency</button>
+    <div class="container">
+        <div class="vertical-center center">
+            <button class="button buttonsub">Submit Anomaly!</button>
+        </div>
+    </div>
+</body>
+</html>
